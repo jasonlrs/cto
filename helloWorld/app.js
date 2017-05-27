@@ -1,8 +1,18 @@
 console.log("the app start");
 
-console.log("()() 执行匿名函数的格式");
-console.log("匿名函数用()扩起来，后面再加一个()；表示执行");
+var a=3;              //赋值
+a=5;                  // 覆盖原有值，数值类型
+a='hello world';     //重新赋值，字符串类型
 
-(function() {
-  console.log("这是一个匿名函数");
-})();
+
+var b = 3 + 5;
+
+var str = a + ' hehe';   //字符串相加
+
+console.log(str);
+
+function f(v) {
+  console.log(v);
+}
+
+f('a=' + a + ';  b=' + b + ' ; str=' +str);
