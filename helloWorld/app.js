@@ -5,7 +5,8 @@ function a() {
 }
 
 function f() {
-  return a;
+  return a;              // 不带括号，表示这个函数对象
+  // return a();        //带括号表示，要执行函数
 }
 
 
