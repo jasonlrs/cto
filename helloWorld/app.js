@@ -13,3 +13,4 @@ function f() {
 
 console.log(f());
 
+console.log((f())());   // 用小括号包住函数对象，后面再跟一个小括号，表示执行该函数
