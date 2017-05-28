@@ -1,4 +1,6 @@
 var http = require('http');
+var url = require('url');
+var querystring = require('querystring');
 
 //http服务器监听浏览器的请求
 // 当接收的是GET方式请求req，使用doGet(req,res)处理请求
@@ -15,6 +17,8 @@ http.createServer(function(req, res) {
 //    res.write('<p>hehe !</p>');  //res.write() 表示连接还在，请求没有结束
 //  }
 
+
+
   if(req.method === 'GET') {
     doGet(req, res);
   } else if (req.method === 'POST') {
@@ -23,13 +27,18 @@ http.createServer(function(req, res) {
     res.end();
   }
 
-
-  res.end('Hello World!\n');  //res.end() 表示连接结束，意味着请求结束
 }).listen(3001, '192.168.5.137');
 
 function doGet(req, res) {
+  // 使用url对象，解析出query
+  var query=url.parse(req.url).query;
+  console.log(query);
 
-// 通过表单发送数据给服务器
+  // 使用querystring模块解析query对象
+  var queryObj = querystring.parse(url.parse(req.url).query);
+  console.log(queryObj);
+
+// 服务器回复信息
   res.write('<html>');
   res.write('<head>');
   res.write('<title>');
@@ -51,8 +60,21 @@ function doGet(req, res) {
 
 
 function doPost(req, res) {
-  res.write('success!');
-  res.end();
+  console.log('doPost');
+  var formData='';
+
+//通过req.on('data',function)给req请求绑定一个事件，只要接收到一个数据包请求
+//就调用一个函数处理这个数据包请求
+  req.on('data', function(data) {
+    // console.log(data.toString());    //这个函数，接收一个数据包请求后，直接将数据打印
+    formData+=data;
+  });
+
+//通过req.on('end',function)监听一个end事件，当一个包发送完毕，客户端会向服务器发送一个end事件
+//服务器接收到end事件后，进行处理
+  req.on('end', function() {
+    res.end(formData);
+  });
 }
 
 
