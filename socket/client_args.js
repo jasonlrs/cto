@@ -7,12 +7,19 @@ var port = process.argv[3];
 const client = net.connect({host:hostname, port:port}, () => {
   // 'connect' listener
   console.log('connected to server!');
-  client.write('world!\r\n');
+
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('readable', () => {
+    var chunck = process.stdin.read();
+    if(chunck !== null) {
+      client.write(`data: ${chunck}`);
+    }
+  });  
 });
 
 client.on('data', (data) => {
   console.log(data.toString());
-  client.end();
+  //client.end();
 });
 
 
